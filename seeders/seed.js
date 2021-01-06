@@ -5,7 +5,7 @@ let db = require("../models");
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true
 // });
-mongoose.connect("mongodb://localhost/WorkoutDB", {
+mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
