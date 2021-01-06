@@ -5,7 +5,7 @@ const db = require("./models");
 const app = express();
 const path = require('path')
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 
 
@@ -18,19 +18,21 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutdb", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
+mongoose.set("useUnifiedTopology", true);
 
 // routes
-app.use(require("./routes/api.js"));
+// app.use(require("./routes/api.js"));
 
 //html routes
 app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/exercise.html"))
 });
+
 app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/stats.html"))
 });
 
-//API routes
+//api routes
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
     .then(data => {
@@ -53,7 +55,7 @@ app.post("/api/workouts", (req, res) => {
 })
 
 app.put("/api/workouts/:id", (req, res) => {
-  db.Workout.update({ _id: req.params.id },
+  db.Workout.updateOne({ _id: req.params.id },
     {
       $push: { exercises: req.body }
     }).then(dbUpdated => {
@@ -64,4 +66,5 @@ app.put("/api/workouts/:id", (req, res) => {
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
+
 
