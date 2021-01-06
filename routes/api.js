@@ -32,4 +32,18 @@ router.get("/api/workout", (req, res) => {
     });
 });
 
+db.workout.find({}).then(dbworkout => {
+
+  dbworkout.forEach(workout => {
+      var total = 0;
+      workout.exercises.forEach(e => {
+          total += e.duration;
+      });
+      workout.totalDuration = total;
+      res.json(dbworkout);
+    }).catch(err => {
+        res.json(err);
+    });
+});
+
 module.exports = router;
